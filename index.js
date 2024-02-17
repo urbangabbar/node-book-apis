@@ -24,7 +24,11 @@ app.post("/api/book", (req, res)=> {
 })
 
 app.get("/api/book", (req, res)=> {
-  res.send(books)
+  const {category} = req.query;
+  if(category){
+  return res.send(books.filter(book => book.category === category))
+  }
+  return res.send(books)
 })
 
 // :bookId shown over here is path variable
@@ -35,6 +39,32 @@ app.get("/api/book/:bookid", (req, res)=>{
     res.status(400).send({err: "Invalid bookid"})
   }
   res.send(book)
+})
+
+app.delete("/api/book/:bookid", (req, res)=>{
+  const { bookid } = req.params;
+  const bookIndex = books.findIndex(book => book._id === parseInt(bookid))
+  if(bookIndex === -1){
+    return res.status(400).send({err: "Invalid bookid"})
+  }else{
+    books.splice(bookIndex, 1)
+    return res.status(204).send()
+  }
+})
+
+app.put("/api/book/:bookid", (req, res)=>{
+  const { bookid } = req.params;
+  const bookBody = req.body
+  const bookIndex = books.findIndex(book => book._id === parseInt(bookid))
+  if(bookIndex === -1){
+    return res.status(400).send({err: "Invalid bookid"})
+  }else{
+    books[bookIndex] = {
+      ...bookBody,
+      _id: bookid
+    }
+    return res.send(books[bookIndex])
+  }
 })
 
 
