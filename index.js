@@ -1,6 +1,8 @@
 const express = require('express') // express module import
+const mongoose = require('mongoose');
 const cors = require('cors')
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const { Book } = require('./model/book');
 
 // we called express function to create app object
 const app = express()
@@ -17,18 +19,15 @@ app.use(cors());
 
 const books = []
 
-app.post("/api/book", (req, res)=> {
-  const newBook = {...req.body, _id: generateUniqueId()}
-  books.push(newBook)
+app.post("/api/book",async (req, res)=> {
+  const newBook = new Book({...req.body})
+  await newBook.save()
   res.send(newBook)
 })
 
-app.get("/api/book", (req, res)=> {
-  const {category} = req.query;
-  if(category){
-  return res.send(books.filter(book => book.category === category))
-  }
-  return res.send(books)
+app.get("/api/book",async (req, res)=> {
+  const books = await Book.find({});
+  res.send(books)
 })
 
 // :bookId shown over here is path variable
@@ -70,6 +69,8 @@ app.put("/api/book/:bookid", (req, res)=>{
 
 // starting app on port 3000
 const port = 3000
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+mongoose.connect('mongodb+srv://abhinav:yUj5GxHhxGPx27p@cluster0.gboeuco.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0').then(()=> {
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+  })
+}).catch(err =>  console.error(err))

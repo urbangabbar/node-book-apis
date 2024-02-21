@@ -5,18 +5,10 @@ const booksSchema = new mongoose.Schema({
     description: String,
     authorName: String,
     category: String
-  });
-
+});
 
 const Book = mongoose.model('book', booksSchema);
 
-
-async function main() {
-  await mongoose.connect('mongodb+srv://info:YTRSXlMUjmspfNiz@cluster0.tdnn0sx.mongodb.net/?retryWrites=true&w=majority');
-  console.log("db connected sucess!!")
-  const newBook = new Book({name: "dancing", authorName: "sdcsdv", description: "sdfsdfv", category: "Fiction"})
-  await newBook.save()
+module.exports = {
+  Book
 }
-
-
-main().catch(err => console.log(err));
