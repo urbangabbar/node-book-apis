@@ -7,9 +7,6 @@ const { Book } = require('./model/book');
 // we called express function to create app object
 const app = express()
 
-function generateUniqueId() {
-  return Math.floor(1000 + Math.random() * 9000);
-}
 
 // create application/json parser
 app.use(bodyParser.json())
