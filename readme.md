@@ -98,6 +98,10 @@ db.collection.find({ field: { $gt: value } })
 $in: Matches any of the values specified in an array.
 db.collection.find({ field: { $in: [value1, value2] } })
 
+$in: Takes array and any one value of that array should match
+$all: Takes array and all one value of that array should match
+$nin: Takes array and none one value of that array should match
+
 $and, $or, $not: Logical operators for combining multiple conditions.
 db.collection.find({ $and: [ { condition1 }, { condition2 } ] })
 
